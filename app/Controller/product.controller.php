@@ -10,7 +10,19 @@ class ProductController {
     return $allProducts;
   }
 
+  public function getByParam($value) {
+    $model = new ProductModel();
+    $existingValue = $model->getByParam($value);
+    
+    return $existingValue;
+  }
+
   public function createProduct($data) {
+    $existingValue = $this->getByParam($data->sku);
+
+    var_export($existingValue);
+    die();
+
     $model = new ProductModel();
 
     try {

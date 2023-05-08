@@ -31,6 +31,15 @@ class ProductModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getByParam($value) {
+        $sql = "SELECT * FROM $this->tabela WHERE sku = "."'".$value."'";
+        $stmt = $this->pdo->query($sql);
+        // $stmt->bindValue(":value", $value);
+        var_export($stmt->fetchAll(PDO::FETCH_ASSOC));
+        die();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function createProduct($data) {
         $sql = "INSERT INTO $this->tabela (name, price, type, attribute, sku) VALUES (:name, :price, :type, :attribute, :sku)";
 
