@@ -18,22 +18,62 @@ class ProductController {
   }
 
   public function createProduct($data) {
+    $params = [];
+
+    foreach ($data as $key => $value) {
+      if (empty($value)) {
+        return "All fields are mandatory, please submit required data.";
+      }
+
+      $params[] = $key;
+    }
+
+    if (!empty(array_diff(["sku", "name", "price", "type", "attribute"], $params))) {
+      return ("Field doesn't exists on database.");
+    }
+
     $existingValue = $this->getByParam($data->sku);
 
-    var_export($existingValue);
-    die();
+    if (!empty($existingValue)) {
+      $json = new stdClass();
+      $json->message = 'This object already exists.';
+
+      http_response_code(409);
+
+      return $json;
+    }
 
     $model = new ProductModel();
 
+    $json = new stdClass();
+
     try {
-      return $model->createProduct($data);
+      $json->response = $model->createProduct($data);
+      $json->message = 'Object created successfully';
+      return $json;
     } catch (PDOException $e) {
       var_export($e->getMessage());
     }
   }
 
-  public function deleteProduct() {
-    
+  public function deleteProduct($ids) {
+    $model = new ProductModel();
+
+    $json = new stdClass();
+
+    try {
+      $json->response = $model->deleteProduts($ids);
+
+      if ($json->response >= 1) {
+        $json->message = 'Items removed with success.';
+      } else {
+        $json->message = 'This id does not exist.';
+      }
+      
+      return $json;
+    } catch (PDOException $e) {
+      var_export($e->getMessage());
+    }
   }
 }
 

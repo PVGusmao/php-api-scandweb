@@ -12,36 +12,39 @@ class ProductModel {
      * Model using table;
      * @var string;
      */
-    protected $tabela;
+    protected $table;
     /**
      * Columns from my table;;
      * @var array;
      */
-    protected $colunas = [];
+    protected $columns = [];
 
     public function __construct() {
         $database = new Database();
         $this->pdo = $database->getPdo();
-        $this->tabela = 'product';
+        $this->table = 'product';
     }
 
     public function getAllProducts() {
-        $sql = "SELECT * FROM $this->tabela";
+        $sql = "SELECT * FROM $this->table";
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getByParam($value) {
-        $sql = "SELECT * FROM $this->tabela WHERE sku = "."'".$value."'";
+        $sql = "SELECT * FROM $this->table WHERE sku = "."'".$value."'";
         $stmt = $this->pdo->query($sql);
-        // $stmt->bindValue(":value", $value);
-        var_export($stmt->fetchAll(PDO::FETCH_ASSOC));
-        die();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getById($id) {
+        $sql = "SELECT * FROM $this->table WHERE id = "."'".$id."'";
+        $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function createProduct($data) {
-        $sql = "INSERT INTO $this->tabela (name, price, type, attribute, sku) VALUES (:name, :price, :type, :attribute, :sku)";
+        $sql = "INSERT INTO $this->table (name, price, type, attribute, sku) VALUES (:name, :price, :type, :attribute, :sku)";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(":name", $data->name);
@@ -53,11 +56,12 @@ class ProductModel {
         return $stmt->execute();
     }
 
-    public function deleteProduts($id) {
-        $sql = "DELETE FROM $this->tabela WHERE id = (:id)";
+    public function deleteProduts($ids) {
+        $data = implode("','", $ids->id);
+        $sql = "DELETE FROM $this->table WHERE id IN ('".$data."')";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(":id", $id->id);
-        return $stmt->execute();
+        $stmt->execute();
+        return $stmt->rowCount();
     }
 }
 ?>

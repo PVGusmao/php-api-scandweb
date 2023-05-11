@@ -15,9 +15,9 @@
 
   function route($base_Method, $base_URL, $data = '') {
     $routes = [
-      ['/create', 'createProduct', 'POST'],
-      ['/list', 'getAllProducts', 'GET'],
-      ['/delete', 'deleteProduct', 'DELETE'],
+      ['/addproduct', 'createProduct', 'POST'],
+      ['/listall', 'getAllProducts', 'GET'],
+      ['/removeproducts', 'deleteProduct', 'DELETE'],
     ];
   
     foreach ($routes as $index => $route) {
@@ -63,22 +63,15 @@
   function formatResponseHeaders() {
     header('Content-Type: application/json');
     header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT");
     header("Access-Control-Allow-Headers: Content-Type");
-    header("HTTP/1.1 200 OK");
 
-    // if (isset($_SERVER['HTTP_ORIGIN'])) {
-    //   header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-    //   header('Access-Control-Allow-Credentials: true');
-    //   header('Access-Control-Max-Age: 86400');
-    // }
-    
-    // if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-      
-    //   if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-    //     header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-      
-    //   if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-    //     header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-    // }
+    if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
+      header('Access-Control-Allow-Origin: *');
+      header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method,Access-Control-Request-Headers, Authorization");
+      header("HTTP/1.1 200 OK");
+      die();
+    }
+    // header("HTTP/1.1 200 OK");
   }
 ?>
