@@ -56,7 +56,6 @@ class Kernel {
 
   public function routes() {
     $routes = [
-      ['/', 'notFound', 'GET'],
       ['/addproduct', 'createProduct', 'POST'],
       ['/listall', 'getAllProducts', 'GET'],
       ['/removeproducts', 'deleteProduct', 'DELETE'],

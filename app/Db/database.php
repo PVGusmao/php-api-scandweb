@@ -4,7 +4,7 @@ class Database {
    *Mysql connection;
     *@var string
     */
-  private $dsn = 'mysql:host=localhost;dbname=product;charset=utf8';
+  private $dsn = 'mysql:host=localhost;dbname=products;charset=utf8';
   /**
    *Usename;
     *@var string
@@ -14,7 +14,7 @@ class Database {
    *User password;
     *@var string
     */
-  private $senha = '123456';
+  private $senha = 'Paulo2010.Paulo2010.';
   /**
    *@var string
     */
